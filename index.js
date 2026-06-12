@@ -3734,7 +3734,7 @@ function buildMenuFooter() {
         action: {
           type: 'message',
           label: 'สมัครสมาชิก',
-          text: 'ยินยอมรับข้อตกลง'
+          text: 'ลงทะเบียนยืนยันตัวตน'
         }
       },
       {
@@ -7586,9 +7586,12 @@ if (text === 'face%') {
     });
   }
 
-  if (text === 'ยินยอมรับข้อตกลง') {
+  if (
+    text === 'ยินยอมรับข้อตกลง' ||
+    text === 'ลงทะเบียนยืนยันตัวตน'
+) {
     return reply(event.replyToken, buildRegisterGuideFlex());
-  }
+}
 
   if (text === 'ติดต่อแอดมิน') {
     return reply(event.replyToken, buildContactAdminFlex());
@@ -7598,7 +7601,7 @@ if (text === 'face%') {
     if (!member) {
       return reply(event.replyToken, {
         type: 'text',
-        text: 'คุณยังไม่ได้สมัครสมาชิก\nกรุณาพิมพ์: ยินยอมรับข้อตกลง'
+        text: 'คุณยังไม่ได้สมัครสมาชิก\nกรุณาพิมพ์ ยินยอมรับข้อตกลง'
       });
     }
 
