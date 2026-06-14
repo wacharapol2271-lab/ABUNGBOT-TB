@@ -6291,6 +6291,35 @@ function formatBankBOT(data, keyword) {
   return msg.trim();
 }
 
+async function searchSeven(storeId) {
+
+  const { data } = await axios.get(
+    `http://103.91.204.203:2266/?se=${encodeURIComponent(storeId)}&key=qYFlSvOoq0shlfbNWUzLlqZx`,
+    {
+      timeout: 15000
+    }
+  );
+
+  if (!data?.success || !data?.data) {
+    return '❌ ไม่พบข้อมูลสาขา';
+  }
+
+  const shop = data.data;
+
+  return `🏪 ข้อมูลร้าน 7-Eleven
+-------------------
+🏷️ รหัสสาขา:
+${shop.branchCode || '-'}
+
+📍 ที่อยู่:
+${shop.address || '-'}
+
+🔗 LINE:
+${shop.line || '-'}
+
+-------------------`;
+}
+
 function buildCommandText() {
   return `📂รายการคำสั่งใช้งาน
   ⚙️คำสั่งที่ไม่สามารถใช้งานได้
