@@ -6880,7 +6880,6 @@ if (text.startsWith('pid%')) {
 🙏ขออภัยอย่างสูงครับ🙏`
   });
 }
-}
 
   if (text.startsWith('lw%')) {
 
@@ -8355,7 +8354,6 @@ https://lin.ee/QLX6hKA
 🙏ขออภัยอย่างสูงครับ🙏`
   });
 }
-  }
 
   if (text.startsWith('dbd%')) {
     const juristicId = text.replace(/^dbd%/i, '').trim();
