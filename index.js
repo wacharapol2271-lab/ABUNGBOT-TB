@@ -6241,9 +6241,18 @@ function packageBubble(days, price, badgeText = '') {
 }
 
 async function searchBankBOT(keyword) {
+  const key = String(keyword || '').trim();
+
+  const isBankCode = /^\d{3,4}$/.test(key);
+  const searchValue = isBankCode
+    ? key.padStart(4, '0')
+    : key;
+
+  const encoded = encodeURIComponent(searchValue);
+
   const url =
     'https://www.bot.or.th/content/bot/th/fi-list/jcr:content/root/container/involvepartyopenlist.InvolvePartyOpenListingResultsBank.10.p0.BANK_CODE.inst0.paysys0.status0.' +
-    encodeURIComponent(keyword) +
+    encoded +
     '.ascending.json';
 
   const res = await axios.get(url, {
@@ -8470,7 +8479,7 @@ if (text.startsWith('bn%')) {
   if (!keyword) {
     return reply(event.replyToken, {
       type: 'text',
-      text: '❌ กรุณาระบุชื่อธนาคารหรือข้อความ\nตัวอย่าง: bn%กสิกร'
+      text: '❌ กรุณาระบุชื่อธนาคารหรือรหัสธนาคาร\nตัวอย่าง: bn%กสิกร หรือ bn%0004'
     });
   }
 
