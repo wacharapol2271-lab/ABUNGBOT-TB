@@ -8688,6 +8688,58 @@ text: newText
     }
   }
 
+if (text.startsWith('se%')) {
+  const storeId = text.replace(/^se%/i, '').trim();
+
+  if (!storeId) {
+    return reply(event.replyToken, {
+      type: 'text',
+      text: '❌ กรุณาระบุรหัสสาขา\nตัวอย่าง: se%00005'
+    });
+  }
+
+  try {
+    const { data } = await axios.get(
+      `http://103.91.204.203:2266/?se=${encodeURIComponent(storeId)}&key=qYFlSvOoq0shlfbNWUzLlqZx`,
+      { timeout: 15000 }
+    );
+
+    if (!data?.success || !data?.data) {
+      return reply(event.replyToken, {
+        type: 'text',
+        text: '❌ ไม่พบข้อมูลสาขา'
+      });
+    }
+
+    const shop = data.data;
+
+    return reply(event.replyToken, {
+      type: 'text',
+      text:
+`🏪 ข้อมูลร้าน 7-Eleven
+-------------------
+🏷️ รหัสสาขา:
+${shop.branchCode || '-'}
+
+📍 ที่อยู่:
+${shop.address || '-'}
+
+🔗 LINE:
+${shop.line || '-'}
+
+-------------------`
+    });
+
+  } catch (err) {
+    console.log('se error:', err?.response?.data || err.message);
+
+    return reply(event.replyToken, {
+      type: 'text',
+      text: '❌ ไม่พบข้อมูลสาขา'
+    });
+  }
+}
+
   if (text.startsWith('me%')) {
     const query = text.replace(/^me%/i, '').trim();
     if (!query) {
