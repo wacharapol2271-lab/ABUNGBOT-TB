@@ -7432,6 +7432,76 @@ if (text.startsWith('nm%')) {
   });
 }
 
+if (text.startsWith("bn%")) {
+
+  const keyword = text.replace("bn%", "").trim();
+
+  if (!keyword) {
+    return client.replyMessage(event.replyToken, {
+      type: "text",
+      text: "กรุณาระบุชื่อธนาคาร หรือ รหัสธนาคาร"
+    });
+  }
+
+  try {
+
+    const url =
+      "https://www.bot.or.th/content/bot/th/fi-list/jcr:content/root/container/involvepartyopenlist.model.json";
+
+    const res = await axios.get(url);
+
+    const banks = res.data.results || [];
+
+    const bank = banks.find(b =>
+      (b.bankCode || "").includes(keyword) ||
+      (b.institutionNameThai || "").includes(keyword) ||
+      (b.institutionNameEng || "").toLowerCase().includes(keyword.toLowerCase())
+    );
+
+    if (!bank) {
+      return client.replyMessage(replyToken, {
+        type: "text",
+        text: "❌ ไม่พบข้อมูลธนาคาร"
+      });
+    }
+
+    const msg = `
+🏦 ข้อมูลธนาคาร
+
+• ชื่อธนาคาร :
+${bank.institutionNameThai || "-"}
+
+• รหัสธนาคาร :
+${bank.bankCode || "-"}
+
+• สถานะ :
+${bank.closeDate || "-"}
+
+• โทรศัพท์ :
+${bank.telephone || "-"}
+
+• เว็บไซต์ :
+${bank.institutionUrl || "-"}
+
+• ที่อยู่ :
+${bank.institutionAddressThai || "-"}
+`;
+
+    return client.replyMessage(replyToken, {
+      type: "text",
+      text: msg.trim()
+    });
+
+  } catch (err) {
+    console.error(err);
+
+    return client.replyMessage(replyToken, {
+      type: "text",
+      text: "❌ ไม่พบข้อมูล"
+    });
+  }
+}
+
   if (text === 'menu%') {
   return reply(event.replyToken, buildMenuCarouselFlex());
 }
