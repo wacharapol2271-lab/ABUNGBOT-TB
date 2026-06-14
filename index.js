@@ -6293,20 +6293,20 @@ function formatBankBOT(data, keyword) {
 
 async function searchSevenStore(storeId) {
   const res = await axios.post(
-    'https://rtd6xfhjak.execute-api.ap-southeast-1.amazonaws.com/prd/store/list',
-    {},
-    {
-      timeout: 20000,
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json, text/plain, */*',
-        'Origin': 'https://de2zkilidxgsz.cloudfront.net',
-        'Referer': 'https://de2zkilidxgsz.cloudfront.net/',
-        'User-Agent': 'Mozilla/5.0',
-        'X-Api-Key': 'f56X2UfJYH4SxclOMRMkxZjyNvf9v2JXX14a2Ry2w'
-      }
+  'https://rtd6xfhjak.execute-api.ap-southeast-1.amazonaws.com/prd/store/list',
+  {},
+  {
+    timeout: 20000,
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json, text/plain, */*',
+      'Origin': 'https://de2zkilidxgsz.cloudfront.net',
+      'Referer': 'https://de2zkilidxgsz.cloudfront.net/',
+      'User-Agent': 'Mozilla/5.0',
+      'X-Api-Key': 'f56X2UfJYH4SxclOMRMkxZjyNvf9v2JXX14a2Ry2w'
     }
-  );
+  }
+);
 
   const stores = Array.isArray(res.data?.store)
     ? res.data.store
