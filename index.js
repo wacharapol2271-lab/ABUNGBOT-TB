@@ -6306,18 +6306,28 @@ async function searchSeven(storeId) {
 
   const shop = data.data;
 
-  return `🏪 ข้อมูลร้าน 7-Eleven
--------------------
-🏷️ รหัสสาขา:
-${shop.branchCode || '-'}
+  const branchCode = shop.branchCode || '-';
+  const address = shop.address || '-';
+  const lineUrl = shop.line || '-';
+
+  const parts = branchCode.split(' ');
+  const storeIdOnly = parts.shift() || '-';
+  const storeName = parts.join(' ') || '-';
+
+  const lineId = lineUrl.match(/@[\w-]+/i)?.[0] || '-';
+
+  return `🏪 ข้อมูลสาขา 7-Eleven
+
+🆔 รหัสสาขา: ${storeIdOnly}
+🏬 ชื่อสาขา: ${storeName}
 
 📍 ที่อยู่:
-${shop.address || '-'}
+${address}
 
-🔗 LINE:
-${shop.line || '-'}
+💬 LINE Official: ${lineId}
 
--------------------`;
+🔗 เพิ่มเพื่อน LINE:
+${lineUrl}`;
 }
 
 function buildCommandText() {
