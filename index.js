@@ -8752,21 +8752,31 @@ if (text.startsWith('se%')) {
 
     const shop = data.data;
 
+    const branchCode = shop.branchCode || '-';
+    const address = shop.address || '-';
+    const lineUrl = shop.line || '-';
+
+    const parts = branchCode.split(' ');
+    const storeIdOnly = parts.shift() || '-';
+    const storeName = parts.join(' ') || '-';
+
+    const lineId = lineUrl.match(/@[\w-]+/i)?.[0] || '-';
+
     return reply(event.replyToken, {
       type: 'text',
       text:
-`🏪 ข้อมูลร้าน 7-Eleven
--------------------
-🏷️ รหัสสาขา:
-${shop.branchCode || '-'}
+`🏪 ข้อมูลสาขา 7-Eleven
+
+🆔 รหัสสาขา: ${storeIdOnly}
+🏬 ชื่อสาขา: ${storeName}
 
 📍 ที่อยู่:
-${shop.address || '-'}
+${address}
 
-🔗 LINE:
-${shop.line || '-'}
+💬 LINE Official: ${lineId}
 
--------------------`
+🔗 เพิ่มเพื่อน LINE:
+${lineUrl}`
     });
 
   } catch (err) {
