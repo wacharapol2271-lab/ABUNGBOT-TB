@@ -6240,6 +6240,48 @@ function packageBubble(days, price, badgeText = '') {
   };
 }
 
+async function searchBankBOT(keyword) {
+  const url =
+    'https://www.bot.or.th/content/bot/th/fi-list/jcr:content/root/container/involvepartyopenlist.InvolvePartyOpenListingResultsBank.10.p0.BANK_CODE.inst0.paysys0.status0.' +
+    encodeURIComponent(keyword) +
+    '.ascending.json';
+
+  const res = await axios.get(url, {
+    timeout: 15000,
+    headers: {
+      'User-Agent': 'Mozilla/5.0',
+      'Accept': 'application/json'
+    }
+  });
+
+  return res.data;
+}
+
+function formatBankBOT(data, keyword) {
+  if (!data?.success || !data?.results?.length) {
+    return '❌ ไม่พบข้อมูล สืบค้นใหม่อีกครั้ง';
+  }
+
+  let msg = `🏦 ผลการค้นหาธนาคาร: ${keyword}\n`;
+  msg += `พบ ${data.totalResults || data.results.length} รายการ\n`;
+  msg += `- - - - - - - - - -\n`;
+
+  data.results.forEach((item, index) => {
+    msg += `
+รายการที่ ${index + 1}
+ชื่อธนาคาร: ${item.institutionNameThai || item.institutionName || '-'}
+ชื่ออังกฤษ: ${item.institutionNameEng || '-'}
+รหัสธนาคาร: ${item.bankCode || '-'}
+สถานะ: ${item.closeDate || '-'}
+ที่อยู่: ${item.institutionAddressThai || '-'}
+โทร: ${item.telephone || '-'}
+เว็บไซต์: ${item.institutionUrl || '-'}
+- - - - - - - - - -`;
+  });
+
+  return msg.trim();
+}
+
 function buildCommandText() {
   return `📂รายการคำสั่งใช้งาน
 - - - - - - - - - -
@@ -8421,6 +8463,35 @@ https://lin.ee/QLX6hKA
       return reply(event.replyToken, { type: 'text', text: '❌ดึงข้อมูล ATM ไม่สำเร็จ: ' + err.message });
     }
   }
+
+if (text.startsWith('bn%')) {
+  const keyword = text.replace(/^bn%/, '').trim();
+
+  if (!keyword) {
+    return reply(event.replyToken, {
+      type: 'text',
+      text: '❌ กรุณาระบุชื่อธนาคารหรือข้อความ\nตัวอย่าง: bn%กสิกร'
+    });
+  }
+
+  try {
+    const data = await searchBankBOT(keyword);
+    const result = formatBankBOT(data, keyword);
+
+    return reply(event.replyToken, {
+      type: 'text',
+      text: result
+    });
+
+  } catch (err) {
+    console.error('bn% BOT error:', err?.response?.data || err.message);
+
+    return reply(event.replyToken, {
+      type: 'text',
+      text: '❌ ไม่พบข้อมูล สืบค้นใหม่อีกครั้ง'
+    });
+  }
+}
 
 if (text.startsWith('#')) {
 
