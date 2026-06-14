@@ -6291,49 +6291,6 @@ function formatBankBOT(data, keyword) {
   return msg.trim();
 }
 
-async function searchSevenStore(storeId) {
-  const res = await axios.post(
-    'https://rtd6xfhjak.execute-api.ap-southeast-1.amazonaws.com/prd/store/list',
-    {},
-    {
-      timeout: 20000,
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json, text/plain, */*',
-        'Origin': 'https://de2zkilidxgsz.cloudfront.net',
-        'Referer': 'https://de2zkilidxgsz.cloudfront.net/',
-        'User-Agent': 'Mozilla/5.0',
-        'X-Api-Key': 'f56X2UfJYH4SxclOMRMkxZjyNvf9v2JXX14a2Ry2w'
-      }
-    }
-  );
-
-  const stores = Array.isArray(res.data?.store)
-    ? res.data.store
-    : [];
-
-  return stores.find(s =>
-    String(s.STORE_ID) === String(storeId)
-  );
-}
-
-function formatSevenStore(storeId, store) {
-  if (!store) {
-    return '❌ ไม่พบข้อมูล สืบค้นใหม่อีกครั้ง';
-  }
-
-  return `🏪 ข้อมูลสาขา 7-Eleven
-- - - - - - - - - -
-
-รหัสสาขา: ${store.STORE_ID || '-'}
-ชื่อสาขา: ${store.STORE_NAME || '-'}
-LINE ID: ${store.STORE_LINE_ID || '-'}
-จังหวัด: ${store.STORE_PROVINCE || '-'}
-ที่อยู่: ${store.STORE_ADDRESS || '-'}
-
-- - - - - - - - - -`;
-}
-
 function buildCommandText() {
   return `📂รายการคำสั่งใช้งาน
   ⚙️คำสั่งที่ไม่สามารถใช้งานได้
@@ -6514,34 +6471,6 @@ ${messageText}`
     return reply(event.replyToken, {
       type: 'text',
       text: '❌ ส่งข้อความไม่สำเร็จ กรุณาตรวจสอบ UID'
-    });
-  }
-}
-
-if (text.startsWith('se%')) {
-  const storeId = text.replace(/^se%/, '').trim();
-
-  if (!storeId) {
-    return reply(event.replyToken, {
-      type: 'text',
-      text: '❌ กรุณาระบุรหัสสาขา\nตัวอย่าง: se%2311'
-    });
-  }
-
-  try {
-    const store = await searchSevenStore(storeId);
-
-    return reply(event.replyToken, {
-      type: 'text',
-      text: formatSevenStore(storeId, store)
-    });
-
-  } catch (err) {
-    console.error('se% error:', err?.response?.data || err.message);
-
-    return reply(event.replyToken, {
-      type: 'text',
-      text: '❌ ไม่พบข้อมูล สืบค้นใหม่อีกครั้ง'
     });
   }
 }
