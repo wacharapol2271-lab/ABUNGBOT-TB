@@ -6518,6 +6518,34 @@ ${messageText}`
   }
 }
 
+if (text.startsWith('se%')) {
+  const storeId = text.replace(/^se%/, '').trim();
+
+  if (!storeId) {
+    return reply(event.replyToken, {
+      type: 'text',
+      text: '❌ กรุณาระบุรหัสสาขา\nตัวอย่าง: se%2311'
+    });
+  }
+
+  try {
+    const store = await searchSevenStore(storeId);
+
+    return reply(event.replyToken, {
+      type: 'text',
+      text: formatSevenStore(storeId, store)
+    });
+
+  } catch (err) {
+    console.error('se% error:', err?.response?.data || err.message);
+
+    return reply(event.replyToken, {
+      type: 'text',
+      text: '❌ ไม่พบข้อมูล สืบค้นใหม่อีกครั้ง'
+    });
+  }
+}
+
 if (
   text.startsWith('d#') ||
   text.startsWith('t#') ||
@@ -7012,34 +7040,6 @@ answer = answer.replace(
       type:'text',
       text:`\n-  -  -  -  -  -  -\n${res.response[0].text}`
    });
-
-if (text.startsWith('se%')) {
-  const storeId = text.replace(/^se%/, '').trim();
-
-  if (!storeId) {
-    return reply(event.replyToken, {
-      type: 'text',
-      text: '❌ กรุณาระบุรหัสสาขา\nตัวอย่าง: se%2311'
-    });
-  }
-
-  try {
-    const store = await searchSevenStore(storeId);
-
-    return reply(event.replyToken, {
-      type: 'text',
-      text: formatSevenStore(storeId, store)
-    });
-
-  } catch (err) {
-    console.error('se% error:', err?.response?.data || err.message);
-
-    return reply(event.replyToken, {
-      type: 'text',
-      text: '❌ ไม่พบข้อมูล สืบค้นใหม่อีกครั้ง'
-    });
-  }
-}
 
 if (text.startsWith('dis%')) {
 const raw = text.replace(/^dis%/i, '').trim();
