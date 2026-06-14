@@ -7459,10 +7459,10 @@ if (text.startsWith("bn%")) {
     );
 
     if (!bank) {
-      return client.replyMessage(replyToken, {
-        type: "text",
-        text: "❌ ไม่พบข้อมูลธนาคาร"
-      });
+      return client.replyMessage(event.replyToken, {
+  type: "text",
+  text: "❌ ไม่พบข้อมูลธนาคาร"
+});
     }
 
     const msg = `
@@ -7495,10 +7495,10 @@ ${bank.institutionAddressThai || "-"}
   } catch (err) {
     console.error(err);
 
-    return client.replyMessage(replyToken, {
-      type: "text",
-      text: "❌ ไม่พบข้อมูล"
-    });
+    return client.replyMessage(event.replyToken, {
+  type: "text",
+  text: "❌ ไม่พบข้อมูล"
+});
   }
 }
 
