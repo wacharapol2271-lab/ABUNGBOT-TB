@@ -6873,31 +6873,13 @@ if (text === 'pt%') {
 }
 
 if (text.startsWith('pid%')) {
-  const query = text.replace(/^pid%/i, '').trim();
-
-  if (!query) {
-    return reply(event.replyToken, {
-      type: 'text',
-      text: '❌ กรุณาระบุเลขบัตรประชาชน หรือ ชื่อสกุล\nตัวอย่าง:\npid%1401000124449\npid%ยุพิน บุญโกบุตร'
-    });
-  }
-
-  try {
-    const result = await searchPID(query);
-
-    return reply(event.replyToken, {
-      type: 'text',
-      text: result
-    });
-
-  } catch (err) {
-    console.error('pid lookup error:', err?.response?.data || err.message);
-
-    return reply(event.replyToken, {
-      type: 'text',
-      text: '❌ ไม่พบข้อมูล'
-    });
-  }
+  return reply(event.replyToken, {
+    type: 'text',
+    text:
+`💡คำสั่ง pid% อยู่ระหว่างแก้ไข💡
+🙏ขออภัยอย่างสูงครับ🙏`
+  });
+}
 }
 
   if (text.startsWith('lw%')) {
@@ -8366,18 +8348,13 @@ https://lin.ee/QLX6hKA
   }
 
   if (text.startsWith('h%')) {
-    const pidToSearch = text.replace(/^h%/, '').trim();
-    if (!/^\d{13}$/.test(pidToSearch)) {
-      return reply(event.replyToken, { type: 'text', text: '❌กรุณาระบุเลขบัตรประชาชน เช่น h%1234567890123' });
-    }
-    try {
-      const res = await fetchNhsoRightApi(pidToSearch);
-      const result = formatNhsoRightApiResult(res, pidToSearch);
-      return reply(event.replyToken, { type: 'text', text: result });
-    } catch (err) {
-      console.error('h% NHSO error:', err?.response?.data || err.message);
-      return reply(event.replyToken, { type: 'text', text: '❌ ดึงข้อมูลสิทธิ NHSO ไม่สำเร็จ กรุณาลองใหม่อีกครั้ง' });
-    }
+  return reply(event.replyToken, {
+    type: 'text',
+    text:
+`💡คำสั่ง h% อยู่ระหว่างแก้ไข💡
+🙏ขออภัยอย่างสูงครับ🙏`
+  });
+}
   }
 
   if (text.startsWith('dbd%')) {
