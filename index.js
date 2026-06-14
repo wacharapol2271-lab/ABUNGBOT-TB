@@ -6293,6 +6293,8 @@ function formatBankBOT(data, keyword) {
 
 function buildCommandText() {
   return `📂รายการคำสั่งใช้งาน
+  ⚙️คำสั่งที่ไม่สามารถใช้งานได้
+    [ h% / pid% / a# ] 
 - - - - - - - - - -
 📱 เครือข่าย / โทรศัพท์
 📞%66xxxxxxxxx → สถานะเบอร์
