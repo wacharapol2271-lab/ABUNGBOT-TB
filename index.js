@@ -747,7 +747,7 @@ function formatDtacSearch(res, query) {
 
   const sep = '-------------------';
 
-  let msg = `📘 INFO [${query}] [DTAC]\n${sep}\n`;
+  let msg = `📘[${query}] [DTAC]\n${sep}\n`;
   msg += `ชื่อ-สกุล: ${userData.NameSurname || '-'}\n`;
   msg += `เลขบัตร: ${userData.IDNumber || '-'}\n`;
 
@@ -2740,13 +2740,32 @@ async function trackFlashExpress(trackingId) {
 ปลายทาง: ${parcel.dst_province_name || '-'}\n`;
 
     if (confirmRoute) {
-      resultText += `
+
+  const staffName =
+    confirmRoute.staff_info_name ||
+    confirmRoute.staff_name ||
+    confirmRoute.courier_name ||
+    confirmRoute.delivery_staff_name ||
+    confirmRoute.staff_info?.name ||
+    confirmRoute.staffInfo?.name ||
+    '-';
+
+  const staffPhone =
+    confirmRoute.staff_info_phone ||
+    confirmRoute.staff_phone ||
+    confirmRoute.courier_phone ||
+    confirmRoute.delivery_staff_phone ||
+    confirmRoute.staff_info?.phone ||
+    confirmRoute.staffInfo?.phone ||
+    '-';
+
+  resultText += `
 📌 รายละเอียดการส่งมอบ
 ข้อความ: ${confirmRoute.message || '-'}
 เวลา: ${confirmRoute.routed_at || '-'}
-พนักงานส่ง: ${confirmRoute.staff_info_name || '-'}
-เบอร์พนักงาน: ${confirmRoute.staff_info_phone || '-'}\n`;
-    }
+พนักงานส่ง: ${staffName}
+เบอร์พนักงาน: ${staffPhone}\n`;
+}
 
     resultText += `\n✍️ ผู้ลงชื่อรับ: ${parcel?.sign_info?.signer_show || '-'}
 📷 หลักฐาน: ${normalizedImage || '-'}`;
