@@ -2728,6 +2728,13 @@ async function trackFlashExpress(trackingId) {
     const confirmRoute = Array.isArray(parcel.routes)
       ? (parcel.routes.find(route => route.route_action === 'DELIVERY_CONFIRM') || parcel.routes[0])
       : null;
+
+      console.log('FLASH ROUTE');
+console.log(JSON.stringify(confirmRoute, null, 2));
+
+console.log('FLASH SIGN');
+console.log(JSON.stringify(parcel.sign_info, null, 2));
+
     const normalizedImage = parcel?.sign_info?.image_url?.[0]
       ? parcel.sign_info.image_url[0].replace(/\\\//g, '/')
       : null;
