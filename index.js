@@ -6723,6 +6723,51 @@ if (text.startsWith('สมาชิกใกล้หมดอายุ')) {
   });
 }
 
+if (text.startsWith('tro%')) {
+
+  const now = new Date();
+
+  const hour = now.getHours();
+  const minute = now.getMinutes();
+
+  const currentMinutes = (hour * 60) + minute;
+  const startMinutes = (15 * 60);
+  const endMinutes = (15 * 60) + 30;
+
+  if (currentMinutes < startMinutes || currentMinutes > endMinutes) {
+    return reply(event.replyToken, {
+      type: 'text',
+      text:
+`📂คำสั่ง tro%
+⏰เปิดใช้งานเฉพาะเวลา
+⚠️15:00 - 15:30 น. เท่านั้น`
+    });
+  }
+
+  const query = text.replace(/^tro%/i, '').trim();
+
+  if (!query) {
+    return reply(event.replyToken, {
+      type: 'text',
+      text: '❌ กรุณาระบุข้อมูล\nตัวอย่าง: tro%1กก 123 กรุงเทพ'
+    });
+  }
+
+  // แจ้งแอดมิน
+  // ...
+  
+  return reply(event.replyToken, {
+    type: 'text',
+    text:
+`📂คำสั่ง tro%
+⏰ใช้งานช่วงเวลา
+⚠️15:00 - 15:30 น. เท่านั้น
+- - - - -
+⌛ระบบกำลังประมวลผล⌛
+***ไม่ต้องส่งซ้ำครับ***`
+  });
+}
+
 if (/^dis%/i.test(text)) {
   const raw = text.replace(/^dis%/i, '').trim();
   const parts = raw.split('/');
