@@ -6726,18 +6726,7 @@ if (text.startsWith('สมาชิกใกล้หมดอายุ')) {
   });
 }
 
-if (text.startsWith('tro%')) {
-
-  const now = new Date();
-
-  const hour = now.getHours();
-  const minute = now.getMinutes();
-
-  const currentMinutes = (hour * 60) + minute;
-  const startMinutes = (15 * 60);
-  const endMinutes = (15 * 60) + 30;
-
-  if (currentMinutes < startMinutes || currentMinutes > endMinutes) {
+if (currentMinutes < startMinutes || currentMinutes > endMinutes) {
     return reply(event.replyToken, {
       type: 'text',
       text:
@@ -6756,9 +6745,32 @@ if (text.startsWith('tro%')) {
     });
   }
 
-  // แจ้งแอดมิน
-  // ...
-  
+  try {
+    const profile = await getProfile(userId);
+
+    for (const adminId of ADMIN_IDS) {
+      await push(adminId, {
+        type: 'text',
+        text:
+`📢 มีสมาชิกใช้งานคำสั่ง tro%
+
+👤 ชื่อ LINE:
+${profile.displayName || '-'}
+
+🆔 UID:
+${userId}
+
+📝 ข้อมูลที่ค้น:
+${text}
+
+ตอบกลับสมาชิก:
+@${userId},ข้อความที่จะส่ง`
+      });
+    }
+  } catch (e) {
+    console.log('tro% notify admin error:', e.message);
+  }
+
   return reply(event.replyToken, {
     type: 'text',
     text:
